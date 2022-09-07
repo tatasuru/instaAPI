@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+
+
+<body>
+    <!-- <h1>口コミテスト</h1>
+    <div id="js_review_wrap" data-place-id="ChIJHeG1e4eRQTURCOLhRnSBL90">
+    <section id="js_review_all">
+      <h2>全クチコミ出力</h2>
+    </section>
+    <section id="js_review_over4">
+      <h2>☆4以上クチコミ出力</h2>
+    </section>
+    </div> -->
+
+    <div id="instagramArea" class="instagramArea">
+      <!-- <a href="" class="instagramArea__box">
+        <div class="instagramArea__box_img">
+          <img src="" alt="">
+        </div>
+        <div class="instagramArea__box_txt">
+          <p></p>
+        </div>
+      </a> -->
+    </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="index.js"></script>
+
+    <script>
+      let request = new XMLHttpRequest();
+
+      //ハッシュタグ検索（バージョン12.0です）
+      const APIPath = "https://graph.facebook.com/v14.0/ig_hashtag_search";
+
+      //あなたのIDとアクセストークン
+      const instragramID = '17841454856465392';
+      const ACCESS_TOKEN = 'EABJucLvcwZB4BALXoO2JMMklZAd5ItaTv7EIZBLCuFZAYD1r4ASvkNzbC0RFN92bU5L7fkoXiq9Mb7PLqjDqyZCpdM5rfsngfmn5hVpClvhZCHNh79T9tLLZAW2Iaoq79zJvYxVRbJBocW1n0SHfWZAjasH3W2VvncyOncpelnnBjz3Mn8Ug3oGIEcCXSuP1jugZD';
+
+      //ハッシュタグ（投げたいキーワード）
+      const hash_word = 'おやつ';
+      const hashtag_id = '17841598537073895';
+
+      //最新の投稿
+      // const condition = 'recent_media'
+
+
+      //Request
+      const req = `${APIPath}?user_id=${instragramID}&q=${hash_word}&access_token=${ACCESS_TOKEN}`
+      const req2 = `https://graph.facebook.com/${hashtag_id}/recent_media?user_id=${instragramID}&fields=caption,like_count,id,media_type,media_url,permalink&access_token=${ACCESS_TOKEN}`
+
+
+      window.addEventListener('DOMContentLoaded', () => {
+        getData();
+      })
+
+
+      const getData = async () => {
+        // 非同期処理
+        await fetch(`${req2}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          createDOM(data)
+        })
+        .catch((error) => {
+          // 非同期処理が失敗した場合
+          console.log('失敗 : ' + error)
+        })
+      }
+
+
+
+      // DOMに描画していく
+      const createDOM = (arg) => {
+        const instagramArea = document.getElementById("instagramArea")
+        let instagramList = ''
+
+        arg.data.forEach(item => {
+          if (item.media_url) {
+            instagramList += `
+              <a href="${item.permalink}" class="instagramArea__box">
+                <div class="instagramArea__box_img">
+            `
+            if(item.media_type === 'VIDEO'){
+              instagramList +=`
+                <video src="${item.media_url}"></video>
+              `
+            }else {
+              instagramList +=`
+                <img src="${item.media_url}" alt="">
+              `
+            }
+            if(item.caption.length > 0){
+              let string = item.caption.substr(0, 70) + '...';
+              instagramList +=`
+                  </div>
+                  <div class="instagramArea__box_txt">
+                    <p>${string}</p>
+              `
+              if(item.like_count){
+                instagramList +=`
+                      <p>いいね : ${item.like_count}</p>
+                `
+              } else{
+                instagramList +=`
+                      <p>いいね : 0</p>
+                `
+              }
+              instagramList +=`
+                  </div>
+                </a>
+              `
+            }
+          }
+
+        });
+
+        instagramArea.insertAdjacentHTML('beforeend', instagramList)
+
+      }
+
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
+
+

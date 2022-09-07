@@ -1,0 +1,37 @@
+.instagramArea {
+  max-width: 960px;
+  margin: 0 auto;
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.instagramArea__box {
+  width: 30%;
+  margin-bottom: 80px;
+  text-decoration: none;
+  color: #000;
+  border: 1px solid #000;
+}
+.instagramArea__box_img {
+  width: 100%;
+  height: 280px;
+  margin-bottom: 20px;
+}
+.instagramArea__box_img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+.instagramArea__box_img video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+.instagramArea__box_txt p {
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  line-height: 1.75;
+}/*# sourceMappingURL=index.css.map */
